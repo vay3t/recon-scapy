@@ -3,7 +3,7 @@ Simple script for recon netowrk
 
 # Install (for Arch Linux)
 ```
-sudo pacman -S python2-pip git net-tools
+sudo pacman -S python2 python2-pip git net-tools
 git clone https://github.com/vay3t/recon-scapy
 cd recon-scapy
 sudo pip2 install -r requirements.txt
