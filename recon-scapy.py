@@ -91,7 +91,7 @@ def arp_recon(packet):
 
 
 def help():
-	print """usage: """ + sys.argv[0] + """ <option>
+	print """usage: python2 """ + sys.argv[0] + """ <option>
 
 	help - Show help
 	arping - Discovery hosts with ARP
