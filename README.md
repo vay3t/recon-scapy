@@ -11,13 +11,14 @@ sudo pip2 install -r requirements.txt
 
 # Help
 ```
-usage: python2 recon-scapy.py <option>
+usage: python2 scapy-poc.py <option>
 
 	help - Show help
 	arping - Discovery hosts with ARP
-	arprecon - Discovery host with passive sniffing ARP
+	arpdisplay - View ARP requests and responses
 	recon - Discovery hosts with passive sniffing
 	onlydns - Collect DNS with passive sniffing
 	dnsdump - View DNS requests of hosts with passive sniffing
-
+	macrecon - Recon hosts with MACs
+	posiondetect - Detect ARP Poison
 ```
