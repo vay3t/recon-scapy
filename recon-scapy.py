@@ -112,7 +112,6 @@ def mac_recon(packet):
 						if complete_string not in hosts:
 							hosts.add(complete_string)
 							print(complete_string)
-							print 1
 		if ipDst != "0.0.0.0":
 			if type_ipDst.iptype() == 'PRIVATE':
 				if macDst != broadcast:
@@ -121,8 +120,6 @@ def mac_recon(packet):
 						if complete_string not in hosts:
 							hosts.add(complete_string)
 							print(complete_string)
-							print 2
-
 
 	if packet.haslayer(ARP):
 		macSrc = packet["ARP"].hwsrc
@@ -135,7 +132,6 @@ def mac_recon(packet):
 				if complete_string not in hosts:
 					hosts.add(complete_string)
 					print complete_string
-					print 3
 
 # logs
 def datenow():
