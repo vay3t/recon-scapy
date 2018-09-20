@@ -199,7 +199,7 @@ elif sys.argv[1] == "arpdisplay":
 elif sys.argv[1] == "macrecon":
 	macGateway = getmacbyip(gateway)
 	hosts.add(macGateway+" - "+gateway)
-	sniff(iface=iface,filter="not ether multicast and not host "+myip,prn=mac_recon)
+	sniff(iface=iface,prn=mac_recon)
 elif sys.argv[1] == "poisondetect":
 	request_threshold = 10
 	requests = []
