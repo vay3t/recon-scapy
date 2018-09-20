@@ -1,6 +1,5 @@
 #!/usr/bin/python2
 # Coded by vay3t!
-# Version 0.2
 
 from scapy.all import *
 from datetime import datetime
@@ -8,6 +7,7 @@ import IPy
 import sys
 import commands
 import os
+
 
 # rdpcap comes from scapy and loads in our pcap file
 #packets = rdpcap(sys.argv[1])
@@ -42,6 +42,8 @@ gateway = detect_gateway()
 
 netmask = detect_netmask(iface)
 network = detect_network(iface,netmask)
+
+broadcast = "ff:ff:ff:ff:ff:ff"
 
 
 
@@ -135,7 +137,7 @@ def check_spoof(source, mac, destination):
     if destination == broadcast:
         if not mac in replies_count:
             replies_count[mac] = 0
-    if not source in requests and source != local_ip:
+    if not source in requests and source != myip:
         if not mac in replies_count:
             replies_count[mac] = 0
         else:
@@ -159,7 +161,7 @@ def poison_detect(packet):
     dest = packet.sprintf("%ARP.pdst%")
     source_mac = packet.sprintf("%ARP.hwsrc%")
     operation = packet.sprintf("%ARP.op%")
-    if source == local_ip:
+    if source == myip:
         requests.append(dest)
     if operation == 'is-at':
         return check_spoof(source, source_mac, dest)
