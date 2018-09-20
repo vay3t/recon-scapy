@@ -1,5 +1,6 @@
 #!/usr/bin/python2
 # Coded by vay3t!
+# Version 0.2
 
 from scapy.all import *
 from datetime import datetime
@@ -7,7 +8,6 @@ import IPy
 import sys
 import commands
 import os
-
 
 # rdpcap comes from scapy and loads in our pcap file
 #packets = rdpcap(sys.argv[1])
