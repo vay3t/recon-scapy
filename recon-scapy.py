@@ -106,31 +106,25 @@ def mac_recon(packet):
 		if ipSrc != "0.0.0.0":
 			if type_ipSrc.iptype() == 'PRIVATE':
 				if macSrc != broadcast:
-					if macSrc[:-9] != "01:00:5e":
-						complete_string = macDst + " - " + ipDst
-						if complete_string not in hosts:
-							hosts.add(complete_string)
-							print(complete_string)
+					complete_string = macSrc + " - " + ipSrc
+					if complete_string not in hosts:
+						hosts.add(complete_string)
+						print(complete_string)
 		if ipDst != "0.0.0.0":
 			if type_ipDst.iptype() == 'PRIVATE':
 				if macDst != broadcast:
-					if macDst != "01:00:5e":
-						complete_string = macDst + " - " + ipDst
-						if complete_string not in hosts:
-							hosts.add(complete_string)
-							print(complete_string)
+					complete_string = macDst + " - " + ipDst
+					if complete_string not in hosts:
+						hosts.add(complete_string)
+						print(complete_string)
 
 	if packet.haslayer(ARP):
 		macSrc = packet["ARP"].hwsrc
 		ipSrc = packet["ARP"].psrc
-		type_ipSrc = IPy.IP(ipSrc)
-
-		if macSrc != broadcast:
-			if type_ipSrc.iptype() == "PRIVATE":
-				complete_string = macSrc + " - " + ipSrc
-				if complete_string not in hosts:
-					hosts.add(complete_string)
-					print complete_string
+		complete_string = macSrc + " - " + ipSrc
+		if complete_string not in hosts:
+			hosts.add(complete_string)
+			print complete_string
 
 # logs
 def datenow():
@@ -205,7 +199,7 @@ elif sys.argv[1] == "arpdisplay":
 elif sys.argv[1] == "macrecon":
 	macGateway = getmacbyip(gateway)
 	hosts.add(macGateway+" - "+gateway)
-	sniff(iface=iface,filter="not host "+myip,prn=mac_recon)
+	sniff(iface=iface,filter="not ether multicast and not host "+myip,prn=mac_recon)
 elif sys.argv[1] == "poisondetect":
 	request_threshold = 10
 	requests = []
