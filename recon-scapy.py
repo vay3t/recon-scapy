@@ -107,7 +107,6 @@ def mac_recon(packet):
 			if type_ipSrc.iptype() == 'PRIVATE':
 				if macSrc != broadcast:
 					if macSrc[:-9] != "01:00:5e":
-						print 11,macSrc[:-9]
 						complete_string = macDst + " - " + ipDst
 						if complete_string not in hosts:
 							hosts.add(complete_string)
