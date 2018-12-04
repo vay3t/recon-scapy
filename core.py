@@ -8,9 +8,9 @@ import sys
 import commands
 import os
 
+global hosts
 
-# rdpcap comes from scapy and loads in our pcap file
-#packets = rdpcap(sys.argv[1])
+hosts = set()
 
 def detect_iface():
 	iface = commands.getoutput("route -n | grep UG | awk '{print $8}'")
@@ -63,7 +63,6 @@ def dns_sniff(packet):
 			print str(ip_src) + " -> " + str(ip_dst) + " : " + packet.getlayer(DNS).qd.qname[:-1]
 
 
-hosts = set()
 def ip_dump_priv(packet):
 	if packet.haslayer(IP):
 		ipSrc = packet['IP'].src
@@ -166,46 +165,3 @@ def poison_detect(packet):
         requests.append(dest)
     if operation == 'is-at':
         return check_spoof(source, source_mac, dest)
-
-def help():
-	print """usage: """ + sys.argv[0] + """ <option>
-
-	help - Show help
-	arping - Discovery hosts with ARP
-	arpdisplay - View ARP requests and responses
-	recon - Discovery hosts with passive sniffing
-	onlydns - Collect DNS with passive sniffing
-	dnsdump - View DNS requests of hosts with passive sniffing
-	macrecon - Recon hosts with MACs
-	posiondetect - Detect ARP Poison
-"""
-
-if os.geteuid() != 0:
-	print "You need run with root!"
-if len(sys.argv) != 2:
-	help()
-elif sys.argv[1] == "help":
-	help()
-elif sys.argv[1] == "arping":
-	arping_scan(network)
-elif sys.argv[1] == "onlydns":
-	sniff(iface=iface,filter="udp port 53 and not host "+myip,prn=dns_sniff)
-elif sys.argv[1] == "dnsdump":
-	sniff(iface=iface,filter="udp port 53 and not host "+myip,prn=dns_dump)
-elif sys.argv[1] == "recon":
-	sniff(iface=iface,filter="not host "+myip,prn=ip_dump_priv)
-elif sys.argv[1] == "arpdisplay":
-	sniff(iface=iface,filter="arp and not host "+myip,prn=arp_display,)
-elif sys.argv[1] == "macrecon":
-	macGateway = getmacbyip(gateway)
-	hosts.add(macGateway+" - "+gateway)
-	sniff(iface=iface,prn=mac_recon)
-elif sys.argv[1] == "poisondetect":
-	request_threshold = 10
-	requests = []
-	replies_count = {}
-	notification_issued = []
-	print datenow()+"ARP Spoofing Detection Started on "+network
-	sniff(iface=iface,filter="arp", prn=poison_detect, store=0)
-else:
-	help()
