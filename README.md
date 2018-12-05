@@ -34,3 +34,6 @@ usage: python2 pcap-recon.py <option> <pcap file>
 	macrecon - Recon hosts with MACs
 	poisondetect - Detect ARP Poison
 ```
+
+# Warning
+The active scan "arping" is detected almost by anything
