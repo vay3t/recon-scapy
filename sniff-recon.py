@@ -23,7 +23,7 @@ def help():
 
 
 if os.geteuid() != 0:
-	print "You need run with root!"
+	print "[!] You need run with root!"
 
 try:
 	if len(sys.argv) != 2:
