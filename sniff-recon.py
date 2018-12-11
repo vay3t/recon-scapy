@@ -4,6 +4,7 @@
 from core import *
 from scapy.all import *
 
+import os
 import sys
 
 
