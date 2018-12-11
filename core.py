@@ -4,7 +4,6 @@
 from scapy.all import *
 from datetime import datetime
 import IPy
-import sys
 import commands
 
 global hosts
