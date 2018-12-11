@@ -6,7 +6,6 @@ from datetime import datetime
 import IPy
 import sys
 import commands
-import os
 
 global hosts
 
