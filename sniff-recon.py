@@ -13,8 +13,8 @@ def help():
 	print """usage: sudo python2 """ + sys.argv[0] + """ <option>
 
 	help - Show help
-	arping - Discovery hosts with ARP (Active scan)
 	simple - Show ip with port connections
+	arping - Discovery hosts with ARP (Active scan)
 	arpdisplay - View ARP requests and responses
 	recon - Discovery hosts with passive sniffing
 	onlydns - Collect DNS with passive sniffing
