@@ -10,6 +10,7 @@ def help():
 	print """usage: python2 """ + sys.argv[0] + """ <option> <pcap file>
 
  	help - Show help
+ 	simple - Show ip with port connections
 	arpdisplay - View ARP requests and responses
 	recon - Discovery hosts with passive sniffing
 	onlydns - Collect DNS with passive sniffing
@@ -40,6 +41,15 @@ try:
 				packets = rdpcap(sys.argv[2])
 				for packet in packets:
 					dns_dump(packet)
+			except Scapy_Exception as e:
+				print "[-] Error:",e
+
+	elif sys.argv[1] == "simple":
+		if sys.argv[2]:
+			try:
+				packets = rdpcap(sys.argv[2])
+				for packet in packets:
+					ip_port_viewer(packet)
 			except Scapy_Exception as e:
 				print "[-] Error:",e
 

@@ -14,6 +14,7 @@ def help():
 
 	help - Show help
 	arping - Discovery hosts with ARP (Active scan)
+	simple - Show ip with port connections
 	arpdisplay - View ARP requests and responses
 	recon - Discovery hosts with passive sniffing
 	onlydns - Collect DNS with passive sniffing
@@ -35,6 +36,9 @@ try:
 
 	elif sys.argv[1] == "arping":
 		arping_scan(network)
+
+	elif sys.argv[1] == "simple":
+		sniff(iface=iface,filter="not host "+myip,prn=ip_port_viewer)
 
 	elif sys.argv[1] == "onlydns":
 		sniff(iface=iface,filter="udp port 53 and not host "+myip,prn=dns_sniff)

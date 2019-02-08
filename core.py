@@ -58,7 +58,7 @@ def dns_sniff(packet):
 		ip_src = packet[IP].src
 		ip_dst = packet[IP].dst   
 		if packet.haslayer(DNS) and packet.getlayer(DNS).qr == 0:
-			print str(ip_src) + " -> " + str(ip_dst) + " : " + packet.getlayer(DNS).qd.qname[:-1]
+			print str(ip_src) + " ---> " + str(ip_dst) + " : " + packet.getlayer(DNS).qd.qname[:-1]
 
 
 def ip_dump_priv(packet):
@@ -77,6 +77,20 @@ def ip_dump_priv(packet):
 			if ipDst not in hosts:
 				hosts.add(ipDst)
 				print(ipDst)
+
+def ip_port_viewer(packet):
+	if packet.haslayer(IP):
+		ipSrc = packet['IP'].src
+		ipDst = packet['IP'].dst
+		if packet.haslayer(TCP):
+			portSrc = packet['TCP'].sport
+			portDst = packet['TCP'].dport
+			print ipSrc+":"+str(portSrc)+" ---> TCP ---> "+ipDst+":"+str(portDst)
+		if packet.haslayer(UDP):
+			portSrc = packet['UDP'].sport
+			portDst = packet['UDP'].dport
+			print ipSrc+":"+str(portSrc)+" ---> UDP ---> "+ipDst+":"+str(portDst)		
+		
 
 def arping_scan(network):
 	conf.verb=0
