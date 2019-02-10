@@ -33,5 +33,4 @@ usage: python pcap-recon.py <option> <pcap file>
 	onlydns - Collect DNS with passive sniffing
 	dnsdump - View DNS requests of hosts with passive sniffing
 	macrecon - Recon hosts with MACs
-	poisondetect - Detect ARP Poison
 ```
