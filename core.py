@@ -4,46 +4,18 @@
 from scapy.all import *
 from datetime import datetime
 import IPy
-import commands
+import netifaces
 
 global hosts
 
 hosts = set()
 
-def detect_iface():
-	iface = commands.getoutput("route -n | grep UG | awk '{print $8}'")
-	return iface
-
-def detect_gateway():
-	gateway = commands.getoutput("route -n | grep UG | awk '{print $2}'")
-	return gateway
-
-def detect_ip(iface):
-	myip = commands.getoutput('ifconfig '+iface+' | grep "inet "').split()[1]
-	return myip
-
-def detect_netmask(iface):
-	netmask = commands.getoutput('ifconfig '+iface+' | grep "inet "').split()[3]
-	return netmask
-
-def detect_network(iface,netmask):
-	from netaddr import IPAddress
-	bitNetmask = IPAddress(netmask).netmask_bits()
-	network = commands.getoutput("route -n | grep "+iface+" | grep '"+netmask+"' | awk '{print $1}'")
-	return network+"/"+str(bitNetmask)
-
-
-iface = detect_iface()
-myip = detect_ip(iface)
-
-gateway = detect_gateway()
-
-netmask = detect_netmask(iface)
-network = detect_network(iface,netmask)
-
 broadcast = "ff:ff:ff:ff:ff:ff"
 
-
+def bitNetmask(iface,netmask):
+	from netaddr import IPAddress
+	bitNetmask = IPAddress(netmask).netmask_bits()
+	return bitNetmask
 
 def dns_dump(packet):
     # We're only interested packets with a DNS Round Robin layer
@@ -58,7 +30,7 @@ def dns_sniff(packet):
 		ip_src = packet[IP].src
 		ip_dst = packet[IP].dst   
 		if packet.haslayer(DNS) and packet.getlayer(DNS).qr == 0:
-			print str(ip_src) + " ---> " + str(ip_dst) + " : " + packet.getlayer(DNS).qd.qname[:-1]
+			print(str(ip_src) + " ---> " + str(ip_dst) + " : " + packet.getlayer(DNS).qd.qname[:-1])
 
 
 def ip_dump_priv(packet):
@@ -85,24 +57,17 @@ def ip_port_viewer(packet):
 		if packet.haslayer(TCP):
 			portSrc = packet['TCP'].sport
 			portDst = packet['TCP'].dport
-			print ipSrc+":"+str(portSrc)+" ---> TCP ---> "+ipDst+":"+str(portDst)
+			print(str(ipSrc)+":"+str(portSrc)+" ---> TCP ---> "+str(ipDst)+":"+str(portDst))
 		if packet.haslayer(UDP):
 			portSrc = packet['UDP'].sport
 			portDst = packet['UDP'].dport
-			print ipSrc+":"+str(portSrc)+" ---> UDP ---> "+ipDst+":"+str(portDst)		
-		
-
-def arping_scan(network):
-	conf.verb=0
-	ans,uans = arping(network)
-	for snd,rcv in ans:
-		print rcv.sprintf(r"%Ether.src% - %ARP.psrc%")
+			print(str(ipSrc)+":"+str(portSrc)+" ---> UDP ---> "+str(ipDst)+":"+str(portDst))	
 
 def arp_display(packet):
     if packet[ARP].op == 1: #who-has (request)
-        print '[->] Request: {} is asking about {}'.format(packet[ARP].psrc, packet[ARP].pdst)
+        print('[->] Request: {} is asking about {}'.format(packet[ARP].psrc, packet[ARP].pdst))
     if packet[ARP].op == 2: #is-at (response)
-        print '[<-] Response: {} has address {}'.format(packet[ARP].hwsrc, packet[ARP].psrc)
+        print('[<-] Response: {} has address {}'.format(packet[ARP].hwsrc, packet[ARP].psrc))
 
 def mac_recon(packet):
 	if packet.haslayer(IP):
@@ -135,7 +100,7 @@ def mac_recon(packet):
 		complete_string = macSrc + " - " + ipSrc
 		if complete_string not in hosts:
 			hosts.add(complete_string)
-			print complete_string
+			print(complete_string)
 
 # logs
 def datenow():

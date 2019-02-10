@@ -11,11 +11,10 @@ sudo pip2 install -r requirements.txt
 
 # Help
 ```
-usage: sudo python2 sniff-recon.py <option>
+usage: python sniff-recon.py <iface> <option>
 
 	help - Show help
 	simple - Show ip with port connections
-	arping - Discovery hosts with ARP (Active scan)
 	arpdisplay - View ARP requests and responses
 	recon - Discovery hosts with passive sniffing
 	onlydns - Collect DNS with passive sniffing
@@ -25,7 +24,7 @@ usage: sudo python2 sniff-recon.py <option>
 ```
 
 ```
-usage: python2 pcap-recon.py <option> <pcap file>
+usage: python pcap-recon.py <option> <pcap file>
 
  	help - Show help
 	simple - Show ip with port connections

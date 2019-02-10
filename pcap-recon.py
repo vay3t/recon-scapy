@@ -7,7 +7,7 @@ from scapy.all import *
 import sys
 
 def help():
-	print """usage: python2 """ + sys.argv[0] + """ <option> <pcap file>
+	print("""usage: python """ + sys.argv[0] + """ <pcap file> <option> 
 
  	help - Show help
  	simple - Show ip with port connections
@@ -16,8 +16,7 @@ def help():
 	onlydns - Collect DNS with passive sniffing
 	dnsdump - View DNS requests of hosts with passive sniffing
 	macrecon - Recon hosts with MACs
-	poisondetect - Detect ARP Poison
-"""
+""")
 
 try:
 	if len(sys.argv) != 3:
@@ -26,77 +25,37 @@ try:
 	elif sys.argv[1] == "help":
 		help()
 
-	elif sys.argv[1] == "onlydns":
-		if sys.argv[2]:
-			try:
-				packets = rdpcap(sys.argv[2])
-				for packet in packets:
-					dns_sniff(packet)
-			except Scapy_Exception as e:
-				print "[-] Error:",e
-
-	elif sys.argv[1] == "dnsdump":
-		if sys.argv[2]:
-			try:
-				packets = rdpcap(sys.argv[2])
-				for packet in packets:
-					dns_dump(packet)
-			except Scapy_Exception as e:
-				print "[-] Error:",e
-
-	elif sys.argv[1] == "simple":
-		if sys.argv[2]:
-			try:
-				packets = rdpcap(sys.argv[2])
-				for packet in packets:
-					ip_port_viewer(packet)
-			except Scapy_Exception as e:
-				print "[-] Error:",e
-
-	elif sys.argv[1] == "recon":
-		if sys.argv[2]:
-			try:
-				packets = rdpcap(sys.argv[2])
-				for packet in packets:
-					ip_dump_priv(packet)
-			except Scapy_Exception as e:
-				print "[-] Error:",e
-
-	elif sys.argv[1] == "arpdisplay":
-		if sys.argv[2]:
-			try:
-				packets = rdpcap(sys.argv[2])
-				for packet in packets:
-					arp_display(packet)
-			except Scapy_Exception as e:
-				print "[-] Error:",e
-
-	elif sys.argv[1] == "macrecon":
-		macGateway = getmacbyip(gateway)
-		hosts.add(macGateway+" - "+gateway)
-		if sys.argv[2]:
-			try:
-				packets = rdpcap(sys.argv[2])
-				for packet in packets:
-					macrecon(packet)
-			except Scapy_Exception as e:
-				print "[-] Error:",e
-
-	elif sys.argv[1] == "poisondetect":
-		request_threshold = 10
-		requests = []
-		replies_count = {}
-		notification_issued = []
-		print datenow()+"ARP Spoofing Detection..."
-		if sys.argv[2]:
-			try:
-				packets = rdpcap(sys.argv[2])
-				for packet in packets:
-					poisondetect(packet)
-			except Scapy_Exception as e:
-				print "[-] Error:",e
-
 	else:
-		help()
+		packets = rdpcap(sys.argv[1])
+
+		if sys.argv[2] == "onlydns":
+			for packet in packets:
+				dns_sniff(packet)
+
+		elif sys.argv[2] == "dnsdump":
+			for packet in packets:
+				dns_dump(packet)
+
+		elif sys.argv[2] == "simple":
+			for packet in packets:
+				ip_port_viewer(packet)
+
+		elif sys.argv[2] == "recon":
+			for packet in packets:
+				ip_dump_priv(packet)
+
+		elif sys.argv[2] == "arpdisplay":
+			for packet in packets:
+				arp_display(packet)
+
+		elif sys.argv[2] == "macrecon":
+			for packet in packets:
+				macrecon(packet)
+		else:
+			help()
 except IndexError:
 	help()
+except Scapy_Exception as e:
+	print(e)
+except Exception as e:
+	print(e)
