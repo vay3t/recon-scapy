@@ -9,6 +9,7 @@ import netifaces
 global hosts
 
 hosts = set()
+lista_dominios = set()
 
 broadcast = "ff:ff:ff:ff:ff:ff"
 
@@ -18,27 +19,34 @@ def bitNetmask(iface,netmask):
 	return bitNetmask
 
 def dns_dump(packet):
-    # We're only interested packets with a DNS Round Robin layer
-    if packet.haslayer(DNSRR):
-        # If the an(swer) is a DNSRR, print the name it replied with.
-        if isinstance(packet.an, DNSRR):
-            print(packet.an.rrname[:-1])
+	# We're only interested packets with a DNS Round Robin layer
+	if packet.haslayer(DNSRR):
+		# If the an(swer) is a DNSRR, print the name it replied with.
+		if isinstance(packet.an, DNSRR):
+			domain = packet.an.rrname[:-1].decode("utf-8")
+			ipDomain = packet.an.rdata
+			if type(ipDomain) == bytes:
+				ipDomain = packet.an.rdata.decode("utf-8")
+			cadena = domain + " ---> " + ipDomain
+			if cadena not in lista_dominios:
+				lista_dominios.add(cadena)
+				print(cadena)
 
 
 def dns_sniff(packet):
 	if IP in packet:
-		ip_src = packet[IP].src
-		ip_dst = packet[IP].dst   
+		ip_src = packet[IP].src.decode("utf-8")
+		ip_dst = packet[IP].dst.decode("utf-8")
 		if packet.haslayer(DNS) and packet.getlayer(DNS).qr == 0:
-			print(str(ip_src) + " ---> " + str(ip_dst) + " : " + packet.getlayer(DNS).qd.qname[:-1])
+			print(str(ip_src) + " ---> " + str(ip_dst) + " : " + packet.getlayer(DNS).qd.qname[:-1].decode("utf-8"))
 
 
 def ip_dump_priv(packet):
 	if packet.haslayer(IP):
-		ipSrc = packet['IP'].src
+		ipSrc = packet['IP'].src.decode("utf-8")
 		type_ipSrc = IPy.IP(ipSrc)
 
-		ipDst = packet['IP'].dst
+		ipDst = packet['IP'].dst.decode("utf-8")
 		type_ipDst = IPy.IP(ipDst)
 
 		if type_ipSrc.iptype() == 'PRIVATE':
@@ -52,8 +60,8 @@ def ip_dump_priv(packet):
 
 def ip_port_viewer(packet):
 	if packet.haslayer(IP):
-		ipSrc = packet['IP'].src
-		ipDst = packet['IP'].dst
+		ipSrc = packet['IP'].src.decode("utf-8")
+		ipDst = packet['IP'].dst.decode("utf-8")
 		if packet.haslayer(TCP):
 			portSrc = packet['TCP'].sport
 			portDst = packet['TCP'].dport
@@ -71,11 +79,11 @@ def arp_display(packet):
 
 def mac_recon(packet):
 	if packet.haslayer(IP):
-		ipSrc = packet['IP'].src
+		ipSrc = packet['IP'].src.decode("utf-8")
 		type_ipSrc = IPy.IP(ipSrc)
 		macSrc = packet['Ether'].src
 
-		ipDst = packet['IP'].dst
+		ipDst = packet['IP'].dst.decode("utf-8")
 		type_ipDst = IPy.IP(ipDst)
 		macDst = packet['Ether'].dst
 

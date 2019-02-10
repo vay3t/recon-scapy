@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 # Coded by vay3t!
 
 from core import *
@@ -45,21 +45,32 @@ try:
 		netmask = netifaces.ifaddresses(iface)[2][0]["netmask"].encode("utf-8").decode("utf-8")
 
 		if sys.argv[2] == "simple":
-			sniff(iface=iface,filter="not host "+myip+" and not host 255.255.255.255",prn=ip_port_viewer)
+			filtro = "not host "+myip+" and not host 255.255.255.255"
+			print("[+] Starting module 'simple' with filter: '"+filtro+"'")
+			sniff(iface=iface,filter=filtro,prn=ip_port_viewer)
 
 		elif sys.argv[2] == "onlydns":
-			sniff(iface=iface,filter="udp port 53 and not host "+myip,prn=dns_sniff)
+			filtro = "udp port 53 and not host "+myip
+			print("[+] Starting module 'onlydns' with filter: '"+filtro+"'")
+			sniff(iface=iface,filter=filtro,prn=dns_dump)
 		
 		elif sys.argv[2] == "dnsdump":
-			sniff(iface=iface,filter="udp port 53 and not host "+myip,prn=dns_dump)
+			filtro = "udp port 53 and not host "+myip
+			print("[+] Starting module 'dnsdump' with filter: '"+filtro+"'")
+			sniff(iface=iface,filter=filtro,prn=dns_sniff)
 		
 		elif sys.argv[2] == "recon":
-			sniff(iface=iface,filter="not host "+myip,prn=ip_dump_priv)
+			filtro = "not host "+myip
+			print("[+] Starting module 'recon' with filter: '"+filtro+"'")
+			sniff(iface=iface,filter=filtro,prn=ip_dump_priv)
 		
 		elif sys.argv[2] == "arpdisplay":
-			sniff(iface=iface,filter="arp and not host "+myip,prn=arp_display)
+			filtro = "arp and not host "+myip
+			print("[+] Starting module 'arpdisplay' with filter: '"+filtro+"'")
+			sniff(iface=iface,filter=filtro,prn=arp_display)
 		
 		elif sys.argv[2] == "macrecon":
+			print("[+] Starting 'macrecon'")
 			sniff(iface=iface,prn=mac_recon)
 		
 		elif sys.argv[2] == "poisondetect":
@@ -67,13 +78,12 @@ try:
 			requests = []
 			replies_count = {}
 			notification_issued = []
-			print(datenow()+"ARP Spoofing Detection Started on "+myip+"/"+str(bitNetmask(iface,netmask)))
+			print(datenow()+"[+] Starting module 'poisondetect' on "+myip+"/"+str(bitNetmask(iface,netmask)))
 			sniff(iface=iface,filter="arp", prn=poison_detect, store=0)
 
 		else:
 			help()
 except IndexError:
 	help()
-
 except Exception as e:
 	print(e)

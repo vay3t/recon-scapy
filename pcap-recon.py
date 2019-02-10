@@ -30,11 +30,11 @@ try:
 
 		if sys.argv[2] == "onlydns":
 			for packet in packets:
-				dns_sniff(packet)
+				dns_dump(packet)
 
 		elif sys.argv[2] == "dnsdump":
 			for packet in packets:
-				dns_dump(packet)
+				dns_sniff(packet)
 
 		elif sys.argv[2] == "simple":
 			for packet in packets:
