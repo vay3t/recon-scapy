@@ -44,9 +44,13 @@ def dns_sniff(packet):
 def ip_dump_priv(packet):
 	if packet.haslayer(IP):
 		ipSrc = packet['IP'].src
+		if type(ipSrc) == bytes:
+			ipSrc = packet['IP'].src.decode("utf-8")
 		type_ipSrc = IPy.IP(ipSrc)
 
 		ipDst = packet['IP'].dst
+		if type(ipDst) == bytes:
+			ipDst = packet['IP'].dst.decode("utf-8")
 		type_ipDst = IPy.IP(ipDst)
 
 		if type_ipSrc.iptype() == 'PRIVATE':
@@ -60,8 +64,14 @@ def ip_dump_priv(packet):
 
 def ip_port_viewer(packet):
 	if packet.haslayer(IP):
-		ipSrc = packet['IP'].src.decode("utf-8")
-		ipDst = packet['IP'].dst.decode("utf-8")
+		ipSrc = packet['IP'].src
+		if type(ipSrc) == bytes:
+			ipSrc = packet['IP'].src.decode("utf-8")
+		
+		ipDst = packet['IP'].dst
+		if type(ipDst) == bytes:
+			ipDst = packet['IP'].dst.decode("utf-8")
+
 		if packet.haslayer(TCP):
 			portSrc = packet['TCP'].sport
 			portDst = packet['TCP'].dport
@@ -79,11 +89,15 @@ def arp_display(packet):
 
 def mac_recon(packet):
 	if packet.haslayer(IP):
-		ipSrc = packet['IP'].src.decode("utf-8")
+		ipSrc = packet['IP'].src
+		if type(ipSrc) == bytes:
+			ipSrc = packet['IP'].src.decode("utf-8")
 		type_ipSrc = IPy.IP(ipSrc)
 		macSrc = packet['Ether'].src
 
-		ipDst = packet['IP'].dst.decode("utf-8")
+		ipDst = packet['IP'].dst
+		if type(ipDst) == bytes:
+			ipDst = packet['IP'].dst.decode("utf-8")
 		type_ipDst = IPy.IP(ipDst)
 		macDst = packet['Ether'].dst
 

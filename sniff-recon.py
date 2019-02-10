@@ -43,7 +43,8 @@ try:
 
 		myip = netifaces.ifaddresses(iface)[2][0]["addr"].encode("utf-8").decode("utf-8")
 		netmask = netifaces.ifaddresses(iface)[2][0]["netmask"].encode("utf-8").decode("utf-8")
-
+		mymac = netifaces.ifaddresses(iface)[17][0]["addr"].encode("utf-8").decode("utf-8")
+		print("[*] addr: "+myip+"/"+str(bitNetmask(iface,netmask))+" --- "+mymac)
 		if sys.argv[2] == "simple":
 			filtro = "not host "+myip+" and not host 255.255.255.255"
 			print("[+] Starting module 'simple' with filter: '"+filtro+"'")
