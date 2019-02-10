@@ -1,5 +1,5 @@
 # recon-scapy
-Simple script for recon network
+Simple script for recon network with Python3
 
 # Install (for Arch Linux)
 ```
