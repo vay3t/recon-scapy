@@ -24,7 +24,7 @@ usage: python sniff-recon.py <iface> <option>
 ```
 
 ```
-usage: python pcap-recon.py <option> <pcap file>
+usage: python pcap-recon.py <pcap file> <option>
 
  	help - Show help
 	simple - Show ip with port connections
