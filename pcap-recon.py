@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 # Coded by vay3t!
 
 from core import *
@@ -7,7 +7,7 @@ from scapy.all import *
 import sys
 
 def help():
-	print("""usage: python """ + sys.argv[0] + """ <pcap file> <option> 
+	print("""usage: python3 """ + sys.argv[0] + """ <pcap file> <option> 
 
  	help - Show help
  	simple - Show ip with port connections
@@ -29,26 +29,32 @@ try:
 		packets = rdpcap(sys.argv[1])
 
 		if sys.argv[2] == "onlydns":
+			print("[+] Starting module 'onlydns'")
 			for packet in packets:
-				dns_dump(packet)
+				onlydns_sniff(packet)
 
 		elif sys.argv[2] == "dnsdump":
+			print("[+] Starting module 'dnsdump'")
 			for packet in packets:
 				dns_sniff(packet)
 
 		elif sys.argv[2] == "simple":
+			print("[+] Starting module 'simple'")
 			for packet in packets:
 				ip_port_viewer(packet)
 
 		elif sys.argv[2] == "recon":
+			print("[+] Starting module 'recon'")
 			for packet in packets:
 				ip_dump_priv(packet)
 
 		elif sys.argv[2] == "arpdisplay":
+			print("[+] Starting module 'arpdisplay'")
 			for packet in packets:
 				arp_display(packet)
 
 		elif sys.argv[2] == "macrecon":
+			print("[+] Starting module 'macrecon'")
 			for packet in packets:
 				macrecon(packet)
 		else:

@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 # Coded by vay3t!
 
 from scapy.all import *
@@ -18,7 +18,7 @@ def bitNetmask(iface,netmask):
 	bitNetmask = IPAddress(netmask).netmask_bits()
 	return bitNetmask
 
-def dns_dump(packet):
+def onlydns_sniff(packet):
 	# We're only interested packets with a DNS Round Robin layer
 	if packet.haslayer(DNSRR):
 		# If the an(swer) is a DNSRR, print the name it replied with.
@@ -43,10 +43,10 @@ def dns_sniff(packet):
 
 def ip_dump_priv(packet):
 	if packet.haslayer(IP):
-		ipSrc = packet['IP'].src.decode("utf-8")
+		ipSrc = packet['IP'].src
 		type_ipSrc = IPy.IP(ipSrc)
 
-		ipDst = packet['IP'].dst.decode("utf-8")
+		ipDst = packet['IP'].dst
 		type_ipDst = IPy.IP(ipDst)
 
 		if type_ipSrc.iptype() == 'PRIVATE':

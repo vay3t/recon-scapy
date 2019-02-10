@@ -6,7 +6,7 @@ Simple script for recon network with Python3
 sudo pacman -S python python-pip git
 git clone https://github.com/vay3t/recon-scapy
 cd recon-scapy
-sudo pip install -r requirements.txt
+sudo pip3 install -r requirements.txt
 ```
 
 # Help

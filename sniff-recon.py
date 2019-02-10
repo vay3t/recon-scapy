@@ -19,7 +19,7 @@ def poison_detect(packet):
         return check_spoof(source, source_mac, dest)
 
 def help():
-	print("""usage: python """ + sys.argv[0] + """ <iface> <option>
+	print("""usage: python3 """ + sys.argv[0] + """ <iface> <option>
 
 	help - Show help
 	simple - Show ip with port connections
@@ -52,7 +52,7 @@ try:
 		elif sys.argv[2] == "onlydns":
 			filtro = "udp port 53 and not host "+myip
 			print("[+] Starting module 'onlydns' with filter: '"+filtro+"'")
-			sniff(iface=iface,filter=filtro,prn=dns_dump)
+			sniff(iface=iface,filter=filtro,prn=onlydns_sniff)
 		
 		elif sys.argv[2] == "dnsdump":
 			filtro = "udp port 53 and not host "+myip
