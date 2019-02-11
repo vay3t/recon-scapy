@@ -53,14 +53,16 @@ def ip_dump_priv(packet):
 			ipDst = packet['IP'].dst.decode("utf-8")
 		type_ipDst = IPy.IP(ipDst)
 
-		if type_ipSrc.iptype() == 'PRIVATE':
-			if ipSrc not in hosts:
-				hosts.add(ipSrc)
-				print(ipSrc)
-		if type_ipDst.iptype() == 'PRIVATE':
-			if ipDst not in hosts:
-				hosts.add(ipDst)
-				print(ipDst)
+		if ipSrc != "0.0.0.0":
+			if type_ipSrc.iptype() == 'PRIVATE':
+				if ipSrc not in hosts:
+					hosts.add(ipSrc)
+					print(ipSrc)
+		if ipDst != "0.0.0.0":
+			if type_ipDst.iptype() == 'PRIVATE':
+				if ipDst not in hosts:
+					hosts.add(ipDst)
+					print(ipDst)
 
 def ip_port_viewer(packet):
 	if packet.haslayer(IP):
@@ -82,10 +84,11 @@ def ip_port_viewer(packet):
 			print(str(ipSrc)+":"+str(portSrc)+" ---> UDP ---> "+str(ipDst)+":"+str(portDst))	
 
 def arp_display(packet):
-    if packet[ARP].op == 1: #who-has (request)
-        print('[->] Request: {} is asking about {}'.format(packet[ARP].psrc, packet[ARP].pdst))
-    if packet[ARP].op == 2: #is-at (response)
-        print('[<-] Response: {} has address {}'.format(packet[ARP].hwsrc, packet[ARP].psrc))
+	if packet.haslayer(ARP):
+		if packet[ARP].op == 1: #who-has (request)
+			print('[->] Request: {} is asking about {}'.format(packet[ARP].psrc, packet[ARP].pdst))
+		if packet[ARP].op == 2: #is-at (response)
+			print('[<-] Response: {} has address {}'.format(packet[ARP].hwsrc, packet[ARP].psrc))
 
 def mac_recon(packet):
 	if packet.haslayer(IP):

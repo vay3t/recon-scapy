@@ -56,7 +56,7 @@ try:
 		elif sys.argv[2] == "macrecon":
 			print("[+] Starting module 'macrecon'")
 			for packet in packets:
-				macrecon(packet)
+				mac_recon(packet)
 		else:
 			help()
 except IndexError:
