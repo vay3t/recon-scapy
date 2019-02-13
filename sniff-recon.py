@@ -16,7 +16,7 @@ def poison_detect(packet):
     if source == myip:
         requests.append(dest)
     if operation == 'is-at':
-        return check_spoof(source, source_mac, dest,requests,myip)
+        return check_spoof(source, source_mac, dest,requests,myip,replies_count,notification_issued,request_threshold)
 
 def help():
 	print("""usage: python3 """ + sys.argv[0] + """ <iface> <option>
