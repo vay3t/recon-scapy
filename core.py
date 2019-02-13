@@ -134,7 +134,7 @@ def datenow():
 
 
 # Poison detect
-def check_spoof(source, mac, destination, requests,myip):
+def check_spoof(source, mac, destination, requests,myip,replies_count,notification_issued,request_threshold):
     # Function checks if a specific ARP reply is part of an ARP spoof attack or not
     if destination == broadcast:
         if not mac in replies_count:
