@@ -71,7 +71,7 @@ try:
 			sniff(iface=iface,filter=filtro,prn=arp_display)
 		
 		elif sys.argv[2] == "macrecon":
-			print("[+] Starting 'macrecon'")
+			print("[+] Starting module 'macrecon'")
 			sniff(iface=iface,prn=mac_recon)
 		
 		elif sys.argv[2] == "poisondetect":
